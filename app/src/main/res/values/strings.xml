@@ -6,4 +6,7 @@
     <string name="sentence_category_playground">Fun at the Playground</string>
     <string name="sentence_category_eat">A Happy Eating Time</string>
     <string name="sentence_category_holiday">Family Trip on Weekend</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
