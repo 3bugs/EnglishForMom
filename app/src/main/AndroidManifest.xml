@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="th.ac.dusit.dbizcom.englishformom">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,20 +13,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
+        <activity
+            android:name=".VideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen" />
+        <activity
+            android:name=".AnimationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Animations"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AboutActivity"
-            android:label="About" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="About"
+            android:screenOrientation="portrait" />
         <activity android:name=".SentenceDetailsActivity" />
         <activity
             android:name=".SentencesActivity"
-            android:label="Sentences" />
-        <activity android:name=".MainActivity">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="Sentences"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+    </application>
 </manifest>

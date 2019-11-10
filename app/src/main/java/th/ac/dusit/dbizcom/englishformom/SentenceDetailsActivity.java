@@ -1,5 +1,12 @@
 package th.ac.dusit.dbizcom.englishformom;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,14 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +28,7 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
     static final String KEY_SENTENCE_CATEGORY = "sentence_category";
     static final String KEY_SENTENCE_LIST = "sentence_list";
 
+    private MediaPlayer mMediaPlayer;
     private int mCategory;
     private List<Sentence> mSentenceList;
 
@@ -58,7 +58,7 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
             case Sentence.CATEGORY_EAT:
                 title = getString(R.string.sentence_category_eat);
                 break;
-            case Sentence.CATEGORY_HOLIDAY:
+            case Sentence.CATEGORY_WEEKEND:
                 title = getString(R.string.sentence_category_holiday);
                 break;
         }
@@ -96,14 +96,62 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
         });*/
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMediaPlayer = new MediaPlayer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+        }
+    }
+
     private void setupPager() {
         SentencePagerAdapter adapter = new SentencePagerAdapter(
                 SentenceDetailsActivity.this,
                 getSupportFragmentManager(),
                 mSentenceList
         );
+
         ViewPager viewPager = findViewById(R.id.view_pager);
+
+        /*int pagerPadding = 50;
+        viewPager.setClipToPadding(false);
+        viewPager.setPadding(pagerPadding, 0, pagerPadding, 0);*/
+
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void playSoundFromAsset(String fileName) {
+        try {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
+                mMediaPlayer = new MediaPlayer();
+            }
+
+            AssetFileDescriptor descriptor = getAssets().openFd(fileName);
+            mMediaPlayer.setDataSource(
+                    descriptor.getFileDescriptor(),
+                    descriptor.getStartOffset(),
+                    descriptor.getLength()
+            );
+            descriptor.close();
+
+            mMediaPlayer.prepare();
+            mMediaPlayer.setVolume(1f, 1f);
+            mMediaPlayer.setLooping(false);
+            mMediaPlayer.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static class SentencePagerAdapter extends FragmentStatePagerAdapter {

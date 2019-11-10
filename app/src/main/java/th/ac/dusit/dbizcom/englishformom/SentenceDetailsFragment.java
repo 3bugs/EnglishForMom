@@ -2,17 +2,19 @@ package th.ac.dusit.dbizcom.englishformom;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.google.gson.Gson;
+
+import java.util.Locale;
 
 import th.ac.dusit.dbizcom.englishformom.model.Sentence;
 
@@ -64,6 +66,34 @@ public class SentenceDetailsFragment extends Fragment {
         momThTextView.setText(mSentence.momThai);
         childEnTextView.setText(mSentence.childEnglish);
         childThTextView.setText(mSentence.childThai);
+
+        ImageButton momSoundButton = view.findViewById(R.id.mom_sound_button);
+        momSoundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.playSoundFromAsset(mSentence.momSoundFile);
+                }
+            }
+        });
+
+        ImageButton childSoundButton = view.findViewById(R.id.child_sound_button);
+        childSoundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.playSoundFromAsset(mSentence.childSoundFile);
+                }
+            }
+        });
+
+        String msg = String.format(
+                Locale.getDefault(),
+                "Mom sound: %s\nChild sound: %s",
+                mSentence.momSoundFile,
+                mSentence.childSoundFile
+        );
+        //Utils.showLongToast(getActivity(), msg);
     }
 
     @Override
@@ -84,6 +114,6 @@ public class SentenceDetailsFragment extends Fragment {
     }
 
     public interface SentenceDetailsFragmentListener {
-        //void onFragmentInteraction(Uri uri);
+        void playSoundFromAsset(String fileName);
     }
 }
