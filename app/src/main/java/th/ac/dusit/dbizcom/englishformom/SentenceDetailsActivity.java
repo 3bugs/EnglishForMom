@@ -132,9 +132,10 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
         try {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.stop();
-                mMediaPlayer.release();
-                mMediaPlayer = new MediaPlayer();
             }
+
+            mMediaPlayer.release();
+            mMediaPlayer = new MediaPlayer();
 
             AssetFileDescriptor descriptor = getAssets().openFd(fileName);
             mMediaPlayer.setDataSource(
