@@ -9,7 +9,7 @@ import th.ac.dusit.dbizcom.englishformom.model.Sentence;
 
 public class SentenceRepository {
 
-    private static final int SENTENCE_CATEGORY_ALL = -1;
+    private static final String SENTENCE_CATEGORY_ALL = "all";
 
     private Context mContext;
 
@@ -17,7 +17,7 @@ public class SentenceRepository {
         this.mContext = mContext;
     }
 
-    public void getSentenceByCategory(int category, Callback callback) {
+    public void getSentenceByCategory(String category, Callback callback) {
         GetTask getTask = new GetTask(mContext, category, callback);
         getTask.execute();
     }
@@ -36,9 +36,9 @@ public class SentenceRepository {
 
         private Context mContext;
         private Callback mCallback;
-        private int mCategory;
+        private String mCategory;
 
-        public GetTask(Context context, int category, Callback callback) {
+        public GetTask(Context context, String category, Callback callback) {
             this.mContext = context;
             this.mCallback = callback;
             this.mCategory = category;
@@ -49,7 +49,7 @@ public class SentenceRepository {
             AppDatabase db = AppDatabase.getInstance(mContext);
 
             List<Sentence> itemList = null;
-            if (mCategory == SENTENCE_CATEGORY_ALL) {
+            if (SENTENCE_CATEGORY_ALL.equals(mCategory)) {
                 itemList = db.sentenceDao().getAll();
             } else {
                 itemList = db.sentenceDao().getByCategory(mCategory);
@@ -90,7 +90,7 @@ public class SentenceRepository {
     } // ปิด InsertTask
 
     public interface Callback {
-        void onGetSentence(int category, List<Sentence> sentenceList);
+        void onGetSentence(String category, List<Sentence> sentenceList);
         void onInsertSentenceSuccess();
     }
 }

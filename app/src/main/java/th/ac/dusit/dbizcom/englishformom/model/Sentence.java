@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "sentence")
 public class Sentence {
 
-    public static final int CATEGORY_MORNING = 1;
-    public static final int CATEGORY_SCHOOL = 2;
-    public static final int CATEGORY_PLAYGROUND = 3;
-    public static final int CATEGORY_EAT = 4;
-    public static final int CATEGORY_WEEKEND = 5;
+    public static final String CATEGORY_MORNING = "morning";
+    public static final String CATEGORY_SCHOOL = "school";
+    public static final String CATEGORY_PLAYGROUND = "playground";
+    public static final String CATEGORY_EAT = "eat";
+    public static final String CATEGORY_WEEKEND = "weekend";
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -30,11 +30,11 @@ public class Sentence {
     @SerializedName("child_sound_file")
     public final String childSoundFile;
     @SerializedName("category")
-    public final int category;
+    public final String category;
 
     public Sentence(int id, String momEnglish, String momSoundFile, String momThai,
                     String childEnglish, String childSoundFile, String childThai,
-                    int category) {
+                    String category) {
         this.id = id;
         this.momEnglish = momEnglish;
         this.momThai = momThai;

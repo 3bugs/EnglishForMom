@@ -29,7 +29,7 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
     static final String KEY_SENTENCE_LIST = "sentence_list";
 
     private MediaPlayer mMediaPlayer;
-    private int mCategory;
+    private String mCategory;
     private List<Sentence> mSentenceList;
 
     @Override
@@ -38,7 +38,7 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_sentence_details);
 
         Intent intent = getIntent();
-        mCategory = intent.getIntExtra(KEY_SENTENCE_CATEGORY, 0);
+        mCategory = intent.getStringExtra(KEY_SENTENCE_CATEGORY);
 
         String sentenceListJson = intent.getStringExtra(KEY_SENTENCE_LIST);
         mSentenceList = new Gson().fromJson(sentenceListJson, new TypeToken<List<Sentence>>() {

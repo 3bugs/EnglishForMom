@@ -16,7 +16,7 @@ public interface SentenceDao {
     List<Sentence> getAll();
 
     @Query("SELECT * FROM sentence WHERE category = :category")
-    List<Sentence> getByCategory(int category);
+    List<Sentence> getByCategory(String category);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Sentence... sentences);

@@ -21,7 +21,7 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
 
     private SentenceRepository.Callback mCallback = new SentenceRepository.Callback() {
         @Override
-        public void onGetSentence(int category, List<Sentence> sentenceList) {
+        public void onGetSentence(String category, List<Sentence> sentenceList) {
             Intent intent = new Intent(SentencesActivity.this, SentenceDetailsActivity.class);
             intent.putExtra(KEY_SENTENCE_CATEGORY, category);
             intent.putExtra(KEY_SENTENCE_LIST, new Gson().toJson(sentenceList));
@@ -42,20 +42,20 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
         ImageView playgroundImageView = findViewById(R.id.playground_image_view);
         ImageView morningImageView = findViewById(R.id.morning_image_view);
         ImageView eatImageView = findViewById(R.id.eat_image_view);
-        ImageView holidayImageView = findViewById(R.id.holiday_text_view);
+        ImageView weekendImageView = findViewById(R.id.weekend_image_view);
         ImageView schoolImageView = findViewById(R.id.school_image_view);
 
         playgroundImageView.setOnClickListener(this);
         morningImageView.setOnClickListener(this);
         eatImageView.setOnClickListener(this);
-        holidayImageView.setOnClickListener(this);
+        weekendImageView.setOnClickListener(this);
         schoolImageView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         SentenceRepository repository = new SentenceRepository(this);
-        int category = 0;
+        String category = null;
 
         switch (v.getId()) {
             case R.id.morning_image_view:
@@ -70,7 +70,7 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
             case R.id.eat_image_view:
                 category = Sentence.CATEGORY_EAT;
                 break;
-            case R.id.holiday_text_view:
+            case R.id.weekend_image_view:
                 category = Sentence.CATEGORY_WEEKEND;
                 break;
         }
