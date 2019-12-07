@@ -1,8 +1,8 @@
 package th.ac.dusit.dbizcom.englishformom.net;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface WebServices {
 
@@ -18,8 +18,12 @@ public interface WebServices {
             @Field("rate") int rate
     );*/
 
-    @POST("get_sentence")
+    @GET("get_sentence")
+    Call<GetSentenceResponse> getSentence(
+    );
+
+    @GET("get_sentence")
     Call<GetSentenceResponse> getSentenceByCategory(
-            @Field("category") String category
+            @Query("category") String category
     );
 }

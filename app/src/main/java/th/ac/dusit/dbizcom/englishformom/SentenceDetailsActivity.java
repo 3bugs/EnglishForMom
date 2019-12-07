@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -45,30 +44,36 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
         }.getType());
 
         String title = null;
+        int categoryImageResId = 0;
         switch (mCategory) {
             case Sentence.CATEGORY_MORNING:
                 title = getString(R.string.sentence_category_morning);
+                categoryImageResId = R.drawable.title_category_morning;
                 break;
             case Sentence.CATEGORY_SCHOOL:
                 title = getString(R.string.sentence_category_school);
+                categoryImageResId = R.drawable.title_category_school;
                 break;
             case Sentence.CATEGORY_PLAYGROUND:
                 title = getString(R.string.sentence_category_playground);
+                categoryImageResId = R.drawable.title_category_playground;
                 break;
             case Sentence.CATEGORY_EAT:
                 title = getString(R.string.sentence_category_eat);
+                categoryImageResId = R.drawable.title_category_eat;
                 break;
             case Sentence.CATEGORY_WEEKEND:
                 title = getString(R.string.sentence_category_holiday);
+                categoryImageResId = R.drawable.title_category_weekend;
                 break;
         }
 
-        ActionBar actionBar = getSupportActionBar();
+        /*ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
-        }
-        TextView titleTextView = findViewById(R.id.title_text_view);
-        titleTextView.setText(title);
+        }*/
+        ImageView categoryImageView = findViewById(R.id.category_image_view);
+        categoryImageView.setImageResource(categoryImageResId);
 
         setupPager();
 

@@ -61,10 +61,14 @@ function doGetSentence()
 {
     global $db, $response;
 
-    $category = $db->real_escape_string($_GET['category']);
+    $where = ' TRUE ';
+    if (isset($_GET['category'])) {
+        $category = $db->real_escape_string($_GET['category']);
+        $where .= " AND category = '{$category}' ";
+    }
 
     $sql = "SELECT * FROM efm_sentence 
-            WHERE category = '$category' 
+            WHERE $where 
             ORDER BY id";
     if ($result = $db->query($sql)) {
         $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;

@@ -3,7 +3,7 @@ package th.ac.dusit.dbizcom.englishformom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button sentencesButton = findViewById(R.id.sentences_button);
-        sentencesButton.setOnClickListener(new View.OnClickListener() {
+        ImageView dialoguesImageView = findViewById(R.id.dialogues_image_view);
+        dialoguesImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SentencesActivity.class);
@@ -25,16 +25,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button wordsButton = findViewById(R.id.words_button);
-        wordsButton.setOnClickListener(new View.OnClickListener() {
+        ImageView vocabularyImageView = findViewById(R.id.vocabulary_image_view);
+        vocabularyImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.showLongToast(MainActivity.this, "ยังไม่เสร็จครับ");
             }
         });
 
-        Button animationButton = findViewById(R.id.animations_button);
-        animationButton.setOnClickListener(new View.OnClickListener() {
+        ImageView animationImageView = findViewById(R.id.animation_image_view);
+        animationImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AnimationActivity.class);
@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button aboutButton = findViewById(R.id.about_button);
-        aboutButton.setOnClickListener(new View.OnClickListener() {
+        ImageView developerImageView = findViewById(R.id.developer_image_view);
+        developerImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AboutActivity.class);
