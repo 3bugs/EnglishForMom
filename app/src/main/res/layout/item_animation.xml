@@ -12,22 +12,26 @@
 
     <ImageView
         android:id="@+id/video_image_view"
-        android:layout_width="150dp"
-        android:layout_height="90dp"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:scaleType="centerCrop"
+        android:background="#dddddd"
+        android:padding="16dp"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/thumb_animation_01" />
+        app:srcCompat="@drawable/ic_playback" />
 
     <ImageView
         android:id="@+id/category_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
         android:layout_marginStart="12dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="h,500:100"
         app:layout_constraintStart_toEndOf="@+id/video_image_view"
         app:layout_constraintTop_toTopOf="@+id/video_image_view"
         app:srcCompat="@drawable/title_category_morning" />

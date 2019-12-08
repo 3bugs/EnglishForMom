@@ -1,13 +1,13 @@
 <?php
 require_once '../include/head_php.inc';
 
-$pageTitle = 'คำศัพท์ (Vocabulary)';
-$pageTitleShort = 'คำศัพท์';
+$pageTitle = ' Animation';
+$pageTitleShort = ' Animation';
 $placeType = '';
 $userHasPermission = true;
 
 $sql = "SELECT *
-            FROM efm_vocab
+            FROM efm_animation
             ORDER BY id";
 if ($result = $db->query($sql)) {
     $placeList = array();
@@ -62,11 +62,11 @@ if ($result = $db->query($sql)) {
                                 <?php
                                 if ($userHasPermission) {
                                     ?>
-                                    <button type="button" class="btn btn-success pull-right"
+                                    <!--<button type="button" class="btn btn-success pull-right"
                                             onclick="onClickAdd(this)">
                                         <span class="fa fa-plus"></span>&nbsp;
-                                        เพิ่ม<?= $pageTitleShort; ?>
-                                    </button>
+                                        เพิ่ม<?/*= $pageTitleShort; */?>
+                                    </button>-->
                                     <?php
                                 }
                                 ?>
@@ -75,10 +75,8 @@ if ($result = $db->query($sql)) {
                                 <table id="tablePlace_<?= $placeType; ?>" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th style="text-align: center; width: 15%;">คำศัพท์</th>
-                                        <th style="text-align: center; width: 60%;">ความหมาย</th>
-                                        <!--<th style="text-align: center; width: 20%;">หน้าที่ของคำ</th>-->
-                                        <th style="text-align: center; width: 25%;">หมวดหมู่</th>
+                                        <th style="text-align: center; width: 50%;">Animation</th>
+                                        <th style="text-align: center; width: 50%;">หมวดหมู่</th>
                                         <th style="text-align: center;">จัดการ</th>
                                     </tr>
                                     </thead>
@@ -94,46 +92,23 @@ if ($result = $db->query($sql)) {
                                         foreach ($placeList as $place) {
                                             ?>
                                             <tr style="">
-                                                <!--คำศัพท์-->
-                                                <td>
-                                                    <span style="font-family: monospace;"><strong><?= $place['word']; ?></strong></span>
+                                                <!--Animation-->
+                                                <td style="text-align: center">
+                                                    <?php
+                                                    if ($place['video_file']) {
+                                                        ?>
+                                                        <video width="300" height="180" controls>
+                                                            <source src="../video/<?= $place['video_file']; ?>" type="video/mp4">
+                                                            บราวเซอร์ของคุณไม่รองรับการเล่นไฟล์วิดีโอ
+                                                        </video>
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                        <span class="label label-danger" style="padding: 5px">ไม่มีข้อมูลไฟล์วิดีโอ</span>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                 </td>
-                                                <!--ความหมาย-->
-                                                <td>
-                                                    <?= nl2br($place['meaning']); ?>
-                                                </td>
-
-                                                <!--หน้าที่ของคำ-->
-                                                <?php
-                                                $partOfSpeech = null;
-                                                switch ($place['part_of_speech']) {
-                                                    case 'noun':
-                                                        $partOfSpeech = 'นาม (Noun)';
-                                                        break;
-                                                    case 'pronoun':
-                                                        $partOfSpeech = 'สรรพนาม (Pronoun)';
-                                                        break;
-                                                    case 'verb':
-                                                        $partOfSpeech = 'กริยา (Verb)';
-                                                        break;
-                                                    case 'adjective':
-                                                        $partOfSpeech = 'คุณศัพท์ (Adjective)';
-                                                        break;
-                                                    case 'adverb':
-                                                        $partOfSpeech = 'กริยาวิเศษณ์ (Adverb)';
-                                                        break;
-                                                    case 'preposition':
-                                                        $partOfSpeech = 'บุพบท (Preposition)';
-                                                        break;
-                                                    case 'conjunction':
-                                                        $partOfSpeech = 'สันธาน (Conjunction)';
-                                                        break;
-                                                    case 'interjection':
-                                                        $partOfSpeech = 'คำอุทาน (Interjection)';
-                                                        break;
-                                                }
-                                                ?>
-                                                <!--<td style="text-align: center"><?/*= $partOfSpeech; */?></td>-->
 
                                                 <!--หมวดหมู่-->
                                                 <?php
@@ -159,7 +134,7 @@ if ($result = $db->query($sql)) {
                                                 <td style="text-align: center"><?= $categoryText; ?></td>
 
                                                 <td nowrap>
-                                                    <form method="get" action="vocab_add_edit.php" style="display: inline; margin: 0">
+                                                    <form method="get" action="animation_add_edit.php" style="display: inline; margin: 0">
                                                         <input type="hidden" name="place_id" value="<?= $place['id']; ?>"/>
 
                                                         <?php
@@ -170,12 +145,12 @@ if ($result = $db->query($sql)) {
                                                                 <span class="fa fa-pencil"></span>&nbsp;
                                                                 แก้ไข
                                                             </button>
-                                                            <button type="button" class="btn btn-danger"
+                                                            <!--<button type="button" class="btn btn-danger"
                                                                     style="margin-left: 3px; margin-right: 3px"
-                                                                    onclick="onClickDelete(this, <?= $place['id']; ?>)">
+                                                                    onclick="onClickDelete(this, <?/*= $place['id']; */?>)">
                                                                 <span class="fa fa-remove"></span>&nbsp;
                                                                 ลบ
-                                                            </button>
+                                                            </button>-->
                                                             <?php
                                                         }
                                                         ?>
@@ -244,7 +219,7 @@ if ($result = $db->query($sql)) {
         });
 
         function onClickAdd() {
-            window.location.href = 'vocab_add_edit.php';
+            window.location.href = 'animation_add_edit.php';
         }
 
         function onChangePlaceRecommend(element, placeId) {
@@ -320,7 +295,7 @@ if ($result = $db->query($sql)) {
 
         function doDeleteplace(id) {
             $.post(
-                '../api/api.php/delete_vocab',
+                '../api/api.php/delete_animation',
                 {
                     id: id,
                 }

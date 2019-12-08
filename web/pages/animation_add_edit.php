@@ -3,14 +3,14 @@ require_once '../include/head_php.inc';
 
 $placeId = $_GET['place_id'];
 
-$pageTitle = 'คำศัพท์';
+$pageTitle = ' Animation';
 
 $place = array();
 if (isset($placeId)) {
     $placeId = $db->real_escape_string($placeId);
 
     $sql = "SELECT * 
-            FROM efm_vocab 
+            FROM efm_animation 
             WHERE id = $placeId";
 
     if ($result = $db->query($sql)) {
@@ -158,6 +158,7 @@ if (isset($placeId)) {
                                 <!-- /.box-header -->
                                 <div class="box-body">
 
+
                                     <div class="row">
                                         <!--หมวดหมู่-->
                                         <div class="col-md-6">
@@ -167,7 +168,7 @@ if (isset($placeId)) {
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-folder-open"></i>
                                                 </span>
-                                                    <select id="selectCategory" class="form-control" required
+                                                    <select id="selectCategory" class="form-control" required disabled
                                                             name="category"
                                                             oninvalid="this.setCustomValidity('เลือกหมวดหมู่')"
                                                             oninput="this.setCustomValidity('')">
@@ -200,122 +201,83 @@ if (isset($placeId)) {
                                 </div>
                             </div>
 
-                            <!--คำศัพท์, ความหมาย-->
+                            <!--ไฟล์วิดีโอ-->
                             <div class="box box-warning">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">คำศัพท์</h3>
+                                    <h3 class="box-title">Animation
+                                        <!--<small></small>-->
+                                    </h3>
 
-                                    <div class="box-tools pull-right">
+                                    <!-- tools box -->
+                                    <div class="pull-right box-tools">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"
                                                 data-toggle="tooltip" title="ย่อ">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <!-- /.box-tools -->
+                                    <!-- /. tools -->
                                 </div>
                                 <!-- /.box-header -->
-                                <div class="box-body">
-
-                                    <!--คำศัพท์-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="inputWord">คำศัพท์:</label>
-                                                <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-font"></i>
-                                                </span>
-                                                    <input type="text" class="form-control"
-                                                           id="inputWord"
-                                                           name="word"
-                                                           value="<?php echo(!empty($place) ? $place['word'] : ''); ?>"
-                                                           placeholder="กรอกคำศัพท์" required
-                                                           oninvalid="this.setCustomValidity('กรอกคำศัพท์')"
-                                                           oninput="this.setCustomValidity('')"
-                                                           style="font-family: monospace">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--ความหมาย-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="inputMeaning">ความหมาย:</label>
-                                                <div class="input-group">
-                                                <!--<span class="input-group-addon">
-                                                    <i class="fa fa-font"></i>
-                                                    <strong>ก</strong>
-                                                </span>-->
-                                                <textarea rows="4" cols="120"
-                                                          id="inputMeaning"
-                                                          name="meaning"
-                                                          placeholder="กรอกความหมาย" required
-                                                          style="padding: 10px"
-                                                          oninvalid="this.setCustomValidity('กรอกความหมาย')"
-                                                          oninput="this.setCustomValidity('')"><?php echo(!empty($place) ? $place['meaning'] : ''); ?></textarea>
-                                                <!--<input type="text" class="form-control"
-                                                           id="inputMeaning"
-                                                           name="meaning"
-                                                           value="<?php /*echo(!empty($place) ? $place['meaning'] : ''); */ ?>"
-                                                           placeholder="กรอกความหมาย" required
-                                                           oninvalid="this.setCustomValidity('กรอกความหมาย')"
-                                                           oninput="this.setCustomValidity('')">-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--หน้าที่ของคำ-->
+                                <div class="box-body pad" style="background_: #f8f8f8">
                                     <?php
-                                    if (false) {
+                                    if ($place['video_file'] != NULL) {
                                         ?>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="selectPartOfSpeech">หน้าที่ของคำ:</label>
-                                                    <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-tag"></i>
-                                                </span>
-                                                        <select id="selectPartOfSpeech" class="form-control" required
-                                                                name="partOfSpeech"
-                                                                oninvalid="this.setCustomValidity('เลือกหน้าที่ของคำ')"
-                                                                oninput="this.setCustomValidity('')">
-                                                            <option value="" disabled <?= empty($place) ? 'selected' : ''; ?>>-- เลือกหน้าที่ของคำ --</option>
-                                                            <?php
-                                                            $partOfSpeechValList = array(
-                                                                'noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'
-                                                            );
-                                                            $partOfSpeechTextList['noun'] = 'นาม (Noun)';
-                                                            $partOfSpeechTextList['pronoun'] = 'สรรพนาม (Pronoun)';
-                                                            $partOfSpeechTextList['verb'] = 'กริยา (Verb)';
-                                                            $partOfSpeechTextList['adjective'] = 'คุณศัพท์ (Adjective)';
-                                                            $partOfSpeechTextList['adverb'] = 'กริยาวิเศษณ์ (Adverb)';
-                                                            $partOfSpeechTextList['preposition'] = 'บุพบท (Preposition)';
-                                                            $partOfSpeechTextList['conjunction'] = 'สันธาน (Conjunction)';
-                                                            $partOfSpeechTextList['interjection'] = 'คำอุทาน (Interjection)';
-
-                                                            foreach ($partOfSpeechValList as $partOfSpeechVal) {
-                                                                $partOfSpeechText = $partOfSpeechTextList[$partOfSpeechVal];
-                                                                ?>
-                                                                <option value="<?= $partOfSpeechVal; ?>" <?= (!empty($place) && ($place['part_of_speech'] === $partOfSpeechVal)) ? 'selected' : ''; ?>>
-                                                                    <?= $partOfSpeechText; ?>
-                                                                </option>
-                                                                <?php
-                                                            }
-                                                            ?>
-                                                        </select>
+                                        <!-- Custom Tabs -->
+                                        <div class="nav-tabs-custom">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#video_file_tab_1" data-toggle="tab">ไฟล์ Animation ปัจจุบัน</a></li>
+                                                <li><a href="#video_file_tab_2" data-toggle="tab">อัพโหลดไฟล์ Animation ใหม่</a></li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="video_file_tab_1">
+                                                    <div style="padding: 5px">
+                                                        <!--<a target="_blank" href="<?php /*echo(DIR_IMAGES . $place['image_file_name']); */ ?>">แสดงรูปภาพในหน้าจอใหม่</a>-->
+                                                    </div>
+                                                    <video width="300" height="180" controls>
+                                                        <source src="../video/<?= $place['video_file']; ?>" type="video/mp4">
+                                                        บราวเซอร์ของคุณไม่รองรับการเล่นไฟล์วิดีโอ
+                                                    </video>
+                                                </div>
+                                                <!-- /.tab-pane -->
+                                                <div class="tab-pane" id="video_file_tab_2" style="padding: 0px">
+                                                    <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
+                                                        <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
+                                                        <li>ไฟล์ที่อัพโหลดใหม่ จะแทนที่ไฟล์ปัจจุบัน</li>
+                                                        <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
+                                                    </ul>
+                                                    <input id="inputVideoFile" name="videoFile" required
+                                                           type="file" accept="video/mp4"
+                                                           style="width: 500px; margin-top: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"
+                                                           oninvalid="this.setCustomValidity('เลือกไฟล์วิดีโอ')"
+                                                           oninput="this.setCustomValidity('')"/>
+                                                    <div id="videoFilePreview"
+                                                         style="background: #efffd1; padding: 10px;">
                                                     </div>
                                                 </div>
+                                                <!-- /.tab-pane -->
                                             </div>
+                                            <!-- /.tab-content -->
+                                        </div>
+                                        <!-- nav-tabs-custom -->
+                                        <?php
+                                    } else {
+                                        ?>
+                                        <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
+                                            <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
+                                            <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
+                                        </ul>
+                                        <input id="inputVideoFile" name="videoFile" required
+                                               type="file" accept="video/mp4"
+                                               style="width: 500px; margin-top: 10px; margin-bottom: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"
+                                               oninvalid="this.setCustomValidity('เลือกไฟล์วิดีโอ')"
+                                               oninput="this.setCustomValidity('')"/>
+                                        <div id="videoFilePreview"
+                                             style="background: #efffd1; padding: 10px;">
                                         </div>
                                         <?php
                                     }
                                     ?>
                                 </div>
-                                <!-- /.box-body -->
                             </div>
                             <!-- /.box -->
 
@@ -330,11 +292,6 @@ if (isset($placeId)) {
                                         <span class="fa fa-save"></span>&nbsp;
                                         บันทึก
                                     </button>
-                                    <!--<button id="buttonSave" type="button"
-                                            class="btn btn-danger">
-                                        <span class="fa fa-ban"></span>&nbsp;
-                                        ยังไม่พร้อมใช้งานครับ
-                                    </button>-->
                                 </div>
                             </div>
 
@@ -371,8 +328,7 @@ if (isset($placeId)) {
         });
 
         $(function () {
-            $('#momSoundFilePreview').hide();
-            $('#childSoundFilePreview').hide();
+            $('#videoFilePreview').hide();
 
             const previewFile = function (input, placeToInsertPreview) {
                 $(placeToInsertPreview).empty();
@@ -387,9 +343,9 @@ if (isset($placeId)) {
 
                         reader.onload = function (event) {
                             //$($.parseHTML('<img style="width: auto; height: 120px; margin: 3px">'))
-                            const audioElement = $($.parseHTML('<audio controls></audio>'))
+                            const audioElement = $($.parseHTML('<video width="300" height="180" controls></video>'))
                                 .appendTo(placeToInsertPreview);
-                            $($.parseHTML('<source type="audio/mpeg">'))
+                            $($.parseHTML('<source type="video/mp4">'))
                                 .attr('src', event.target.result)
                                 .appendTo(audioElement);
                         };
@@ -398,11 +354,8 @@ if (isset($placeId)) {
                 }
             };
 
-            $('#inputMomSoundFile').on('change', function () {
-                previewFile(this, 'div#momSoundFilePreview');
-            });
-            $('#inputChildSoundFile').on('change', function () {
-                previewFile(this, 'div#childSoundFilePreview');
+            $('#inputVideoFile').on('change', function () {
+                previewFile(this, 'div#videoFilePreview');
             });
         });
 
@@ -417,7 +370,7 @@ if (isset($placeId)) {
             const formData = new FormData(form);
 
             $.ajax({
-                url: '../api/api.php/<?= (isset($placeId) ? 'update_vocab' : 'add_vocab'); ?>',
+                url: '../api/api.php/<?= (isset($placeId) ? 'update_animation' : 'add_animation'); ?>',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -439,7 +392,7 @@ if (isset($placeId)) {
                                     <?php
                                     if (!isset($placeId)) {
                                     ?>
-                                    window.location.href = 'vocab.php';
+                                    window.location.href = 'animation.php';
                                     <?php
                                     } else {
                                     ?>

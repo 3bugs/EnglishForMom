@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:alert('ยังไม่เสร็จครับ')">
+                <a href="animation.php">
                     <i class="fa fa-play-circle"></i> <span>Animation</span>
                 </a>
             </li>

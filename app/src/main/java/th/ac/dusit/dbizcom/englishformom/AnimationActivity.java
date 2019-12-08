@@ -138,23 +138,23 @@ public class AnimationActivity extends AppCompatActivity {
             switch (animation.category) {
                 case Sentence.CATEGORY_MORNING:
                     categoryImageResId = R.drawable.title_category_morning;
-                    h.mVideoImageView.setImageResource(R.drawable.thumb_animation_01);
+                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_01);
                     break;
                 case Sentence.CATEGORY_SCHOOL:
                     categoryImageResId = R.drawable.title_category_school;
-                    h.mVideoImageView.setImageResource(R.drawable.thumb_animation_02);
+                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_02);
                     break;
                 case Sentence.CATEGORY_PLAYGROUND:
                     categoryImageResId = R.drawable.title_category_playground;
-                    h.mVideoImageView.setImageResource(R.drawable.thumb_animation_03);
+                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_03);
                     break;
                 case Sentence.CATEGORY_EAT:
                     categoryImageResId = R.drawable.title_category_eat;
-                    h.mVideoImageView.setImageResource(R.drawable.thumb_animation_04);
+                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_04);
                     break;
                 case Sentence.CATEGORY_WEEKEND:
                     categoryImageResId = R.drawable.title_category_weekend;
-                    h.mVideoImageView.setImageResource(R.drawable.thumb_animation_05);
+                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_05);
                     break;
             }
             h.mCategoryImageView.setImageResource(categoryImageResId);

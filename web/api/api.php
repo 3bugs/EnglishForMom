@@ -43,6 +43,9 @@ switch ($action) {
     case 'delete_sentence':
         doDeleteSentence();
         break;
+    case 'get_vocab':
+        doGetVocab();
+        break;
     case 'add_vocab':
         doAddVocab();
         break;
@@ -52,6 +55,13 @@ switch ($action) {
     case 'delete_vocab':
         doDeleteVocab();
         break;
+    case 'get_animation':
+        doGetAnimation();
+        break;
+    case 'update_animation':
+        doUpdateAnimation();
+        break;
+
     case 'delete_project_asset':
         doDeleteProjectAsset();
         break;
@@ -84,22 +94,98 @@ function doGetSentence()
         $response[KEY_ERROR_MESSAGE] = 'อ่านข้อมูลสำเร็จ';
         $response[KEY_ERROR_MESSAGE_MORE] = '';
 
-        $placeList = array();
+        $sentenceList = array();
         while ($row = $result->fetch_assoc()) {
-            $project = array();
-            $project['id'] = (int)$row['id'];
-            $project['mom_english'] = $row['mom_english'];
-            $project['mom_thai'] = $row['mom_thai'];
-            $project['child_english'] = $row['child_english'];
-            $project['child_thai'] = $row['child_thai'];
-            $project['mom_sound_file'] = $row['mom_sound_file'];
-            $project['child_sound_file'] = $row['child_sound_file'];
-            $project['category'] = $row['category'];
+            $sentence = array();
+            $sentence['id'] = (int)$row['id'];
+            $sentence['mom_english'] = $row['mom_english'];
+            $sentence['mom_thai'] = $row['mom_thai'];
+            $sentence['child_english'] = $row['child_english'];
+            $sentence['child_thai'] = $row['child_thai'];
+            $sentence['mom_sound_file'] = $row['mom_sound_file'];
+            $sentence['child_sound_file'] = $row['child_sound_file'];
+            $sentence['category'] = $row['category'];
 
-            array_push($placeList, $project);
+            array_push($sentenceList, $sentence);
         }
         $result->close();
-        $response[KEY_DATA_LIST] = $placeList;
+        $response[KEY_DATA_LIST] = $sentenceList;
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการอ่านข้อมูล';
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
+function doGetVocab()
+{
+    global $db, $response;
+
+    $where = ' TRUE ';
+    if (isset($_GET['category'])) {
+        $category = $db->real_escape_string($_GET['category']);
+        $where .= " AND category = '{$category}' ";
+    }
+
+    $sql = "SELECT * FROM efm_vocab 
+            WHERE $where 
+            ORDER BY id";
+    if ($result = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'อ่านข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+
+        $vocabList = array();
+        while ($row = $result->fetch_assoc()) {
+            $vocab = array();
+            $vocab['id'] = (int)$row['id'];
+            $vocab['word'] = $row['word'];
+            $vocab['meaning'] = $row['meaning'];
+            $vocab['part_of_speech'] = $row['part_of_speech'];
+            $vocab['category'] = $row['category'];
+
+            array_push($vocabList, $vocab);
+        }
+        $result->close();
+        $response[KEY_DATA_LIST] = $vocabList;
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการอ่านข้อมูล';
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
+function doGetAnimation()
+{
+    global $db, $response;
+
+    $where = ' TRUE ';
+    if (isset($_GET['category'])) {
+        $category = $db->real_escape_string($_GET['category']);
+        $where .= " AND category = '{$category}' ";
+    }
+
+    $sql = "SELECT * FROM efm_animation 
+            WHERE $where 
+            ORDER BY id";
+    if ($result = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'อ่านข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+
+        $animationList = array();
+        while ($row = $result->fetch_assoc()) {
+            $animation = array();
+            $animation['id'] = (int)$row['id'];
+            $animation['video_file'] = $row['video_file'];
+            $animation['category'] = $row['category'];
+
+            array_push($animationList, $animation);
+        }
+        $result->close();
+        $response[KEY_DATA_LIST] = $animationList;
     } else {
         $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
         $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการอ่านข้อมูล';
@@ -154,11 +240,11 @@ function doAddVocab()
 
     $word = trim($db->real_escape_string($_POST['word']));
     $meaning = trim($db->real_escape_string($_POST['meaning']));
-    $partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
+    //$partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
     $category = $db->real_escape_string($_POST['category']);
 
-    $sql = "INSERT INTO efm_vocab (word, meaning, part_of_speech, category) 
-                VALUES ('$word', '$meaning', '$partOfSpeech', '$category')";
+    $sql = "INSERT INTO efm_vocab (word, meaning, category) 
+                VALUES ('$word', '$meaning', '$category')";
 
     if ($result = $db->query($sql)) {
         $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
@@ -231,12 +317,46 @@ function doUpdateVocab()
     $id = $db->real_escape_string($_POST['placeId']);
     $word = trim($db->real_escape_string($_POST['word']));
     $meaning = trim($db->real_escape_string($_POST['meaning']));
-    $partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
+    //$partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
     $category = $db->real_escape_string($_POST['category']);
 
     $sql = "UPDATE efm_vocab 
                 SET word = '$word', meaning = '$meaning', 
-                    part_of_speech = '$partOfSpeech', category = '$category' 
+                    category = '$category' 
+                WHERE id = $id";
+
+    if ($result = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'แก้ไขข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล: ' . $db->error;
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
+function doUpdateAnimation()
+{
+    global $db, $response;
+
+    $id = $db->real_escape_string($_POST['placeId']);
+    $category = $db->real_escape_string($_POST['category']);
+
+    $videoFile = NULL;
+    if ($_FILES['videoFile']['name'] !== '') {
+        if (!moveUploadedFile('videoFile', DIR_VIDEO, $videoFile)) {
+            $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+            $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการอัพโหลดไฟล์';
+            $response[KEY_ERROR_MESSAGE_MORE] = '';
+            return;
+        }
+    }
+    $setFileName = $videoFile ? "video_file = '$videoFile'" : '';
+
+    $sql = "UPDATE efm_animation 
+                SET $setFileName  
                 WHERE id = $id";
 
     if ($result = $db->query($sql)) {
