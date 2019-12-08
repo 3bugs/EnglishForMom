@@ -10,12 +10,12 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="vocab.php">
                     <i class="fa fa-font"></i> <span>คำศัพท์ (Vocabulary)</span>
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)">
+                <a href="javascript:alert('ยังไม่เสร็จครับ')">
                     <i class="fa fa-play-circle"></i> <span>Animation</span>
                 </a>
             </li>

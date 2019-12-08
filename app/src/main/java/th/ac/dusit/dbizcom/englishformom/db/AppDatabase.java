@@ -17,7 +17,7 @@ import th.ac.dusit.dbizcom.englishformom.model.Sentence;
 @Database(entities = {Sentence.class}, exportSchema = false, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "english_for_mom.db";
+    private static final String DB_NAME = "english_for_mom2.db";
 
     public abstract SentenceDao sentenceDao();
 
@@ -53,6 +53,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             super.onOpen(db);
                         }
                     })
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return mInstance;

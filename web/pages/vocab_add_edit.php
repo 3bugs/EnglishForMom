@@ -3,14 +3,14 @@ require_once '../include/head_php.inc';
 
 $placeId = $_GET['place_id'];
 
-$pageTitle = 'บทสนทนา';
+$pageTitle = 'คำศัพท์';
 
 $place = array();
 if (isset($placeId)) {
     $placeId = $db->real_escape_string($placeId);
 
     $sql = "SELECT * 
-            FROM efm_sentence 
+            FROM efm_vocab 
             WHERE id = $placeId";
 
     if ($result = $db->query($sql)) {
@@ -142,7 +142,7 @@ if (isset($placeId)) {
                     <div class="row">
                         <div class="col-xs-12">
 
-                            <!--ประโยคแม่-->
+                            <!--หมวดหมู่-->
                             <div class="box box-success">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">หมวดหมู่</h3>
@@ -157,7 +157,6 @@ if (isset($placeId)) {
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
-
 
                                     <div class="row">
                                         <!--หมวดหมู่-->
@@ -204,7 +203,7 @@ if (isset($placeId)) {
                             <!--ประโยคแม่-->
                             <div class="box box-warning">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">ประโยคแม่</h3>
+                                    <h3 class="box-title">คำศัพท์</h3>
 
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"
@@ -217,21 +216,21 @@ if (isset($placeId)) {
                                 <!-- /.box-header -->
                                 <div class="box-body">
 
-                                    <!--อังกฤษ-->
+                                    <!--คำศัพท์-->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="inputMomEnglish">ภาษาอังกฤษ:</label>
+                                                <label for="inputWord">คำศัพท์:</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-font"></i>
                                                 </span>
                                                     <input type="text" class="form-control"
-                                                           id="inputMomEnglish"
-                                                           name="momEnglish"
-                                                           value="<?php echo(!empty($place) ? $place['mom_english'] : ''); ?>"
-                                                           placeholder="กรอกประโยคภาษาอังกฤษของแม่" required
-                                                           oninvalid="this.setCustomValidity('กรอกประโยคภาษาอังกฤษของแม่')"
+                                                           id="inputWord"
+                                                           name="word"
+                                                           value="<?php echo(!empty($place) ? $place['word'] : ''); ?>"
+                                                           placeholder="กรอกคำศัพท์" required
+                                                           oninvalid="this.setCustomValidity('กรอกคำศัพท์')"
                                                            oninput="this.setCustomValidity('')"
                                                            style="font-family: monospace">
                                                 </div>
@@ -239,23 +238,65 @@ if (isset($placeId)) {
                                         </div>
                                     </div>
 
-                                    <!--ไทย-->
+                                    <!--ความหมาย-->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="inputMomThai">ภาษาไทย:</label>
+                                                <label for="inputMeaning">ความหมาย:</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon">
                                                     <!--<i class="fa fa-font"></i>-->
                                                     <strong>ก</strong>
                                                 </span>
                                                     <input type="text" class="form-control"
-                                                           id="inputMomThai"
-                                                           name="momThai"
-                                                           value="<?php echo(!empty($place) ? $place['mom_thai'] : ''); ?>"
-                                                           placeholder="กรอกประโยคภาษาไทยของแม่" required
-                                                           oninvalid="this.setCustomValidity('กรอกประโยคภาษาไทยของแม่')"
+                                                           id="inputMeaning"
+                                                           name="meaning"
+                                                           value="<?php echo(!empty($place) ? $place['meaning'] : ''); ?>"
+                                                           placeholder="กรอกความหมาย" required
+                                                           oninvalid="this.setCustomValidity('กรอกความหมาย')"
                                                            oninput="this.setCustomValidity('')">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--หน้าที่ของคำ-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="selectPartOfSpeech">หน้าที่ของคำ:</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-tag"></i>
+                                                </span>
+                                                    <select id="selectPartOfSpeech" class="form-control" required
+                                                            name="partOfSpeech"
+                                                            oninvalid="this.setCustomValidity('เลือกหน้าที่ของคำ')"
+                                                            oninput="this.setCustomValidity('')">
+                                                        <option value="" disabled <?= empty($place) ? 'selected' : ''; ?>>-- เลือกหน้าที่ของคำ --</option>
+                                                        <?php
+                                                        $partOfSpeechValList = array(
+                                                            'noun', 'pronoun', 'verb', 'adjective', 'adverb', 'preposition', 'conjunction', 'interjection'
+                                                        );
+                                                        $partOfSpeechTextList['noun'] = 'นาม (Noun)';
+                                                        $partOfSpeechTextList['pronoun'] = 'สรรพนาม (Pronoun)';
+                                                        $partOfSpeechTextList['verb'] = 'กริยา (Verb)';
+                                                        $partOfSpeechTextList['adjective'] = 'คุณศัพท์ (Adjective)';
+                                                        $partOfSpeechTextList['adverb'] = 'กริยาวิเศษณ์ (Adverb)';
+                                                        $partOfSpeechTextList['preposition'] = 'บุพบท (Preposition)';
+                                                        $partOfSpeechTextList['conjunction'] = 'สันธาน (Conjunction)';
+                                                        $partOfSpeechTextList['interjection'] = 'คำอุทาน (Interjection)';
+
+                                                        foreach ($partOfSpeechValList as $partOfSpeechVal) {
+                                                            $partOfSpeechText = $partOfSpeechTextList[$partOfSpeechVal];
+                                                            ?>
+                                                            <option value="<?= $partOfSpeechVal; ?>" <?= (!empty($place) && ($place['part_of_speech'] === $partOfSpeechVal)) ? 'selected' : ''; ?>>
+                                                                <?= $partOfSpeechText; ?>
+                                                            </option>
+                                                            <?php
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,225 +304,6 @@ if (isset($placeId)) {
 
                                 </div>
                                 <!-- /.box-body -->
-                            </div>
-                            <!-- /.box -->
-
-                            <!--ไฟล์เสียงแม่-->
-                            <div class="box box-warning">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">ไฟล์เสียงแม่
-                                        <!--<small></small>-->
-                                    </h3>
-
-                                    <!-- tools box -->
-                                    <div class="pull-right box-tools">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"
-                                                data-toggle="tooltip" title="ย่อ">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /. tools -->
-                                </div>
-                                <!-- /.box-header -->
-                                <div class="box-body pad" style="background_: #f8f8f8">
-                                    <?php
-                                    if (!empty($place)) {
-                                        ?>
-                                        <!-- Custom Tabs -->
-                                        <div class="nav-tabs-custom">
-                                            <ul class="nav nav-tabs">
-                                                <li class="active"><a href="#mom_sound_file_tab_1" data-toggle="tab">ไฟล์เสียงปัจจุบัน</a></li>
-                                                <li><a href="#mom_sound_file_tab_2" data-toggle="tab">อัพโหลดไฟล์เสียงใหม่</a></li>
-                                            </ul>
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="mom_sound_file_tab_1">
-                                                    <div style="padding: 5px">
-                                                        <!--<a target="_blank" href="<?php /*echo(DIR_IMAGES . $place['image_file_name']); */ ?>">แสดงรูปภาพในหน้าจอใหม่</a>-->
-                                                    </div>
-                                                    <audio controls>
-                                                        <source type="audio/mpeg" src="<?= DIR_AUDIO . $place['mom_sound_file']; ?>">
-                                                    </audio>
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                                <div class="tab-pane" id="mom_sound_file_tab_2" style="padding: 0px">
-                                                    <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
-                                                        <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
-                                                        <li>ไฟล์ที่อัพโหลดใหม่ จะแทนที่ไฟล์ปัจจุบัน</li>
-                                                        <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
-                                                    </ul>
-                                                    <input id="inputMomSoundFile" name="momSoundFile"
-                                                           type="file" accept="audio/mpeg"
-                                                           style="width: 500px; margin-top: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"/>
-                                                    <div id="momSoundFilePreview"
-                                                         style="background: #efffd1; padding: 10px;">
-                                                    </div>
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                            </div>
-                                            <!-- /.tab-content -->
-                                        </div>
-                                        <!-- nav-tabs-custom -->
-                                        <?php
-                                    } else {
-                                        ?>
-                                        <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
-                                            <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
-                                            <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
-                                        </ul>
-                                        <input id="inputMomSoundFile" name="momSoundFile" required
-                                               type="file" accept="audio/mpeg"
-                                               style="width: 500px; margin-top: 10px; margin-bottom: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"
-                                               oninvalid="this.setCustomValidity('เลือกไฟล์เสียง')"
-                                               oninput="this.setCustomValidity('')"/>
-                                        <div id="momSoundFilePreview"
-                                             style="background: #efffd1; padding: 10px;">
-                                        </div>
-                                        <?php
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <!-- /.box -->
-
-                            <!--ประโยคลูก-->
-                            <div class="box box-info">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">ประโยคลูก</h3>
-
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"
-                                                data-toggle="tooltip" title="ย่อ">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /.box-tools -->
-                                </div>
-                                <!-- /.box-header -->
-                                <div class="box-body">
-
-                                    <!--อังกฤษ-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="inputChildEnglish">ภาษาอังกฤษ:</label>
-                                                <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-font"></i>
-                                                </span>
-                                                    <input type="text" class="form-control"
-                                                           id="inputChildEnglish"
-                                                           name="childEnglish"
-                                                           value="<?php echo(!empty($place) ? $place['child_english'] : ''); ?>"
-                                                           placeholder="กรอกประโยคภาษาอังกฤษของลูก" required
-                                                           oninvalid="this.setCustomValidity('กรอกประโยคภาษาอังกฤษของลูก')"
-                                                           oninput="this.setCustomValidity('')"
-                                                           style="font-family: monospace">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--ไทย-->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="inputChildThai">ภาษาไทย:</label>
-                                                <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <!--<i class="fa fa-font"></i>-->
-                                                    <strong>ก</strong>
-                                                </span>
-                                                    <input type="text" class="form-control"
-                                                           id="inputChildThai"
-                                                           name="childThai"
-                                                           value="<?php echo(!empty($place) ? $place['child_thai'] : ''); ?>"
-                                                           placeholder="กรอกประโยคภาษาไทยของลูก" required
-                                                           oninvalid="this.setCustomValidity('กรอกประโยคภาษาไทยของลูก')"
-                                                           oninput="this.setCustomValidity('')">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!-- /.box-body -->
-                            </div>
-                            <!-- /.box -->
-
-                            <!--ไฟล์เสียงลูก-->
-                            <div class="box box-info">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">ไฟล์เสียงลูก
-                                        <!--<small></small>-->
-                                    </h3>
-
-                                    <!-- tools box -->
-                                    <div class="pull-right box-tools">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"
-                                                data-toggle="tooltip" title="ย่อ">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <!-- /. tools -->
-                                </div>
-                                <!-- /.box-header -->
-                                <div class="box-body pad" style="background_: #f8f8f8">
-                                    <?php
-                                    if (!empty($place)) {
-                                        ?>
-                                        <!-- Custom Tabs -->
-                                        <div class="nav-tabs-custom">
-                                            <ul class="nav nav-tabs">
-                                                <li class="active"><a href="#child_sound_file_tab_1" data-toggle="tab">ไฟล์เสียงปัจจุบัน</a></li>
-                                                <li><a href="#child_sound_file_tab_2" data-toggle="tab">อัพโหลดไฟล์เสียงใหม่</a></li>
-                                            </ul>
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="child_sound_file_tab_1">
-                                                    <div style="padding: 5px">
-                                                        <!--<a target="_blank" href="<?php /*echo(DIR_IMAGES . $place['image_file_name']); */ ?>">แสดงรูปภาพในหน้าจอใหม่</a>-->
-                                                    </div>
-                                                    <audio controls>
-                                                        <source type="audio/mpeg" src="<?= DIR_AUDIO . $place['child_sound_file']; ?>">
-                                                    </audio>
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                                <div class="tab-pane" id="child_sound_file_tab_2" style="padding: 0px">
-                                                    <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
-                                                        <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
-                                                        <li>ไฟล์ที่อัพโหลดใหม่ จะแทนที่ไฟล์ปัจจุบัน</li>
-                                                        <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
-                                                    </ul>
-                                                    <input id="inputChildSoundFile" name="childSoundFile"
-                                                           type="file" accept="audio/mpeg"
-                                                           style="width: 500px; margin-top: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"/>
-                                                    <div id="childSoundFilePreview"
-                                                         style="background: #efffd1; padding: 10px;">
-                                                    </div>
-                                                </div>
-                                                <!-- /.tab-pane -->
-                                            </div>
-                                            <!-- /.tab-content -->
-                                        </div>
-                                        <!-- nav-tabs-custom -->
-                                        <?php
-                                    } else {
-                                        ?>
-                                        <ul style="color: orangered; margin-top: 10px; margin-bottom: 15px">
-                                            <li>คลิกในกรอบสี่เหลี่ยมเพื่อเลือกไฟล์ หรือลากไฟล์มาปล่อยในกรอบสี่เหลี่ยม</li>
-                                            <li>ไฟล์จะถูกบันทึกเข้าสู่ระบบ หลังจากกดปุ่ม "บันทึก"</li>
-                                        </ul>
-                                        <input id="inputChildSoundFile" name="childSoundFile" required
-                                               type="file" accept="audio/mpeg"
-                                               style="width: 500px; margin-top: 10px; margin-bottom: 10px; border: 2px dotted #ccc; padding: 10px 10px 50px 10px"
-                                               oninvalid="this.setCustomValidity('เลือกไฟล์เสียง')"
-                                               oninput="this.setCustomValidity('')"/>
-                                        <div id="childSoundFilePreview"
-                                             style="background: #efffd1; padding: 10px;">
-                                        </div>
-                                        <?php
-                                    }
-                                    ?>
-                                </div>
                             </div>
                             <!-- /.box -->
 
@@ -496,6 +318,11 @@ if (isset($placeId)) {
                                         <span class="fa fa-save"></span>&nbsp;
                                         บันทึก
                                     </button>
+                                    <!--<button id="buttonSave" type="button"
+                                            class="btn btn-danger">
+                                        <span class="fa fa-ban"></span>&nbsp;
+                                        ยังไม่พร้อมใช้งานครับ
+                                    </button>-->
                                 </div>
                             </div>
 
@@ -578,7 +405,7 @@ if (isset($placeId)) {
             const formData = new FormData(form);
 
             $.ajax({
-                url: '../api/api.php/<?= (isset($placeId) ? 'update_sentence' : 'add_sentence'); ?>',
+                url: '../api/api.php/<?= (isset($placeId) ? 'update_vocab' : 'add_vocab'); ?>',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -600,7 +427,7 @@ if (isset($placeId)) {
                                     <?php
                                     if (!isset($placeId)) {
                                     ?>
-                                    window.location.href = 'sentence.php';
+                                    window.location.href = 'vocab.php';
                                     <?php
                                     } else {
                                     ?>

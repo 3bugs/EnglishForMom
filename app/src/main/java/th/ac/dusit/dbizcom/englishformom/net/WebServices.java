@@ -26,4 +26,8 @@ public interface WebServices {
     Call<GetSentenceResponse> getSentenceByCategory(
             @Query("category") String category
     );
+
+    @GET("get_animation")
+    Call<GetAnimationResponse> getAnimation(
+    );
 }

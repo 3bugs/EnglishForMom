@@ -60,7 +60,7 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
         setupViews();
 
         if (mSentenceList == null) {
-            //doGetSentence();
+            doGetSentence();
         }
     }
 
@@ -117,8 +117,8 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
         schoolImageView.setOnClickListener(this);
     }
 
-    //@Override
-    public void _onClick(View v) {
+    @Override
+    public void onClick(View v) {
         if (mSentenceList == null) {
             return;
         }
@@ -156,8 +156,8 @@ public class SentencesActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
-    @Override
-    public void onClick(View v) {
+    //@Override
+    public void _onClick(View v) {
         SentenceRepository repository = new SentenceRepository(this);
         String category = null;
 

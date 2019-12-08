@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +18,11 @@ import com.google.gson.Gson;
 import java.util.Locale;
 
 import th.ac.dusit.dbizcom.englishformom.model.Sentence;
+import th.ac.dusit.dbizcom.englishformom.net.ApiClient;
 
 public class SentenceDetailsFragment extends Fragment {
+
+    private static final String TAG = SentenceDetailsFragment.class.getName();
 
     private static final String ARG_SENTENCE_JSON = "sentence_json";
 
@@ -57,6 +61,9 @@ public class SentenceDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final ProgressBar momProgressView = view.findViewById(R.id.mom_progress_view);
+        final ProgressBar childProgressView = view.findViewById(R.id.child_progress_view);
+
         TextView momEnTextView = view.findViewById(R.id.mom_en_text_view);
         TextView momThTextView = view.findViewById(R.id.mom_th_text_view);
         TextView childEnTextView = view.findViewById(R.id.child_en_text_view);
@@ -67,22 +74,30 @@ public class SentenceDetailsFragment extends Fragment {
         childEnTextView.setText(mSentence.childEnglish);
         childThTextView.setText(mSentence.childThai);
 
-        ImageButton momSoundButton = view.findViewById(R.id.mom_sound_button);
+        final ImageButton momSoundButton = view.findViewById(R.id.mom_sound_button);
         momSoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String soundUrl = ApiClient.AUDIO_BASE_URL.concat(mSentence.momSoundFile);
+
                 if (mListener != null) {
-                    mListener.playSoundFromAsset(mSentence.momSoundFile);
+                    //momProgressView.setVisibility(View.INVISIBLE);
+                    //mListener.playSoundFromAsset(mSentence.momSoundFile);
+                    mListener.playSoundFromUrl(soundUrl, momSoundButton, momProgressView);
                 }
             }
         });
 
-        ImageButton childSoundButton = view.findViewById(R.id.child_sound_button);
+        final ImageButton childSoundButton = view.findViewById(R.id.child_sound_button);
         childSoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String soundUrl = ApiClient.AUDIO_BASE_URL.concat(mSentence.childSoundFile);
+
                 if (mListener != null) {
-                    mListener.playSoundFromAsset(mSentence.childSoundFile);
+                    //childProgressView.setVisibility(View.INVISIBLE);
+                    //mListener.playSoundFromAsset(mSentence.childSoundFile);
+                    mListener.playSoundFromUrl(soundUrl, childSoundButton, childProgressView);
                 }
             }
         });
@@ -115,5 +130,6 @@ public class SentenceDetailsFragment extends Fragment {
 
     public interface SentenceDetailsFragmentListener {
         void playSoundFromAsset(String fileName);
+        void playSoundFromUrl(String url, View button, View progress);
     }
 }

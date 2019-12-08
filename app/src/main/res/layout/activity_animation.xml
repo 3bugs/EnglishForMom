@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,139 +8,25 @@
     tools:context=".AnimationActivity"
     tools:ignore="ContentDescription">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/title_image_view"
+        android:layout_width="240dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintDimensionRatio="w,120:500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/title_animation" />
 
-        <ImageView
-            android:id="@+id/title_image_view"
-            android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_title" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_image_view" />
 
-        <ImageView
-            android:id="@+id/morning_image_view"
-            style="@style/ButtonSentence"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/morning_text_view"
-            app:layout_constraintEnd_toStartOf="@+id/school_image_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_image_view"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/ic_morning" />
-
-        <ImageView
-            android:id="@+id/school_image_view"
-            style="@style/ButtonSentence"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/morning_image_view"
-            app:layout_constraintTop_toTopOf="@+id/morning_image_view"
-            app:srcCompat="@drawable/ic_school" />
-
-        <ImageView
-            android:id="@+id/playground_image_view"
-            style="@style/ButtonSentence"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/playground_text_view"
-            app:layout_constraintStart_toStartOf="@+id/morning_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/morning_text_view"
-            app:srcCompat="@drawable/ic_playground" />
-
-        <TextView
-            android:id="@+id/morning_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sentence_category_morning"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/playground_image_view"
-            app:layout_constraintEnd_toEndOf="@+id/morning_image_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/morning_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/morning_image_view" />
-
-        <TextView
-            android:id="@+id/playground_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sentence_category_playground"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/holiday_text_view"
-            app:layout_constraintEnd_toEndOf="@+id/playground_image_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/playground_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/playground_image_view" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/sentence_category_holiday"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/holiday_text_view"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/holiday_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/holiday_text_view" />
-
-        <TextView
-            android:id="@+id/eat_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sentence_category_eat"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/eat_image_view"
-            app:layout_constraintStart_toStartOf="@+id/eat_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/eat_image_view" />
-
-        <TextView
-            android:id="@+id/school_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sentence_category_school"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/school_image_view"
-            app:layout_constraintStart_toStartOf="@+id/school_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/school_image_view" />
-
-        <ImageView
-            android:id="@+id/eat_image_view"
-            style="@style/ButtonSentence"
-            app:layout_constraintStart_toStartOf="@+id/school_image_view"
-            app:layout_constraintTop_toTopOf="@+id/playground_image_view"
-            app:srcCompat="@drawable/ic_eat" />
-
-        <ImageView
-            android:id="@+id/holiday_text_view"
-            style="@style/ButtonSentence"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView5"
-            app:layout_constraintEnd_toEndOf="@+id/eat_image_view"
-            app:layout_constraintStart_toStartOf="@+id/playground_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/playground_text_view"
-            app:srcCompat="@drawable/ic_holiday" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

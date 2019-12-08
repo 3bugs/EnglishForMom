@@ -3,8 +3,11 @@ package th.ac.dusit.dbizcom.englishformom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -19,10 +22,13 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import th.ac.dusit.dbizcom.englishformom.etc.Utils;
 import th.ac.dusit.dbizcom.englishformom.model.Sentence;
 
 public class SentenceDetailsActivity extends AppCompatActivity implements
         SentenceDetailsFragment.SentenceDetailsFragmentListener {
+
+    private static final String TAG = SentenceDetailsActivity.class.getName();
 
     static final String KEY_SENTENCE_CATEGORY = "sentence_category";
     static final String KEY_SENTENCE_LIST = "sentence_list";
@@ -157,6 +163,64 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
 
         } catch (Exception e) {
             e.printStackTrace();
+            Utils.showOkDialog(
+                    SentenceDetailsActivity.this,
+                    "Error",
+                    e.getMessage(),
+                    null
+            );
+        }
+    }
+
+    @Override
+    public void playSoundFromUrl(String url, final View button, final View progress) {
+        Log.i(TAG, "Sound URL: ".concat(url));
+
+        button.setEnabled(false);
+        progress.setVisibility(View.VISIBLE);
+
+        try {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+            }
+
+            mMediaPlayer.release();
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    button.setEnabled(true);
+                    progress.setVisibility(View.INVISIBLE);
+                }
+            });
+            mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    button.setEnabled(true);
+                    progress.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+            });
+
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setDataSource(url);
+
+            mMediaPlayer.prepare();
+            mMediaPlayer.setVolume(1f, 1f);
+            mMediaPlayer.setLooping(false);
+            mMediaPlayer.start();
+
+        } catch (Exception e) {
+            button.setEnabled(true);
+            progress.setVisibility(View.INVISIBLE);
+
+            e.printStackTrace();
+            Utils.showOkDialog(
+                    SentenceDetailsActivity.this,
+                    "Error",
+                    e.getMessage(),
+                    null
+            );
         }
     }
 
@@ -165,7 +229,7 @@ public class SentenceDetailsActivity extends AppCompatActivity implements
         private Context mContext;
         private List<Sentence> mSentenceList;
 
-        public SentencePagerAdapter(Context context,  @NonNull FragmentManager fm, List<Sentence> sentenceList) {
+        SentencePagerAdapter(Context context,  @NonNull FragmentManager fm, List<Sentence> sentenceList) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             mContext = context;
             mSentenceList = sentenceList;

@@ -1,13 +1,13 @@
 <?php
 require_once '../include/head_php.inc';
 
-$pageTitle = 'บทสนทนา (Dialogues)';
-$pageTitleShort = 'บทสนทนา';
+$pageTitle = 'คำศัพท์ (Vocabulary)';
+$pageTitleShort = 'คำศัพท์';
 $placeType = '';
 $userHasPermission = true;
 
 $sql = "SELECT *
-            FROM efm_sentence
+            FROM efm_vocab
             ORDER BY id";
 if ($result = $db->query($sql)) {
     $placeList = array();
@@ -75,11 +75,10 @@ if ($result = $db->query($sql)) {
                                 <table id="tablePlace_<?= $placeType; ?>" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th style="text-align: center; width: 40%;">แม่</th>
-                                        <!--<th style="text-align: center;">เสียง</th>-->
-                                        <th style="text-align: center; width: 40%;">ลูก</th>
-                                        <!--<th style="text-align: center;">เสียง</th>-->
-                                        <th style="text-align: center; width: 20%;">หมวดหมู่</th>
+                                        <th style="text-align: center; width: 15%;">คำศัพท์</th>
+                                        <th style="text-align: center; width: 40%;">ความหมาย</th>
+                                        <th style="text-align: center; width: 20%;">หน้าที่ของคำ</th>
+                                        <th style="text-align: center; width: 25%;">หมวดหมู่</th>
                                         <th style="text-align: center;">จัดการ</th>
                                     </tr>
                                     </thead>
@@ -95,46 +94,47 @@ if ($result = $db->query($sql)) {
                                         foreach ($placeList as $place) {
                                             ?>
                                             <tr style="">
-                                                <!--แม่-->
+                                                <!--คำศัพท์-->
                                                 <td>
-                                                    <?= "<div style=\"margin-bottom: 5px; font-family: monospace;\"><strong>{$place['mom_english']}</strong></div><div style=\"margin-bottom: 5px\">{$place['mom_thai']}</div>"; ?>
-                                                    <?php
-                                                    if ($place['mom_sound_file']) {
-                                                        ?>
-                                                        <audio controls>
-                                                            <source src="../audio/<?= $place['mom_sound_file']; ?>" type="audio/mpeg">
-                                                            บราวเซอร์ของคุณไม่รองรับการเล่นไฟล์เสียง
-                                                        </audio>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <span class="label label-danger" style="padding: 5px">ไม่มีข้อมูลไฟล์เสียง</span>
-                                                        <?php
-                                                    }
-                                                    ?>
+                                                    <span style="font-family: monospace;"><strong><?= $place['word']; ?></strong></span>
                                                 </td>
-                                                <!--เสียงแม่-->
-                                                <!--<td style="text-align: center"><?/*= $place['mom_sound_file']; */ ?></td>-->
-                                                <!--ลูก-->
+                                                <!--ความหมาย-->
                                                 <td>
-                                                    <?= "<div style=\"margin-bottom: 5px; font-family: monospace;\"><strong>{$place['child_english']}</strong></div><div style=\"margin-bottom: 5px\">{$place['child_thai']}</div>"; ?>
-                                                    <?php
-                                                    if ($place['child_sound_file']) {
-                                                        ?>
-                                                        <audio controls>
-                                                            <source src="../audio/<?= $place['child_sound_file']; ?>" type="audio/mpeg">
-                                                            บราวเซอร์ของคุณไม่รองรับการเล่นไฟล์เสียง
-                                                        </audio>
-                                                        <?php
-                                                    } else {
-                                                        ?>
-                                                        <span class="label label-danger" style="padding: 5px">ไม่มีข้อมูลไฟล์เสียง</span>
-                                                        <?php
-                                                    }
-                                                    ?>
+                                                    <?= $place['meaning']; ?>
                                                 </td>
-                                                <!--เสียงลูก-->
-                                                <!--<td style="text-align: center"><?/*= $place['child_sound_file']; */ ?></td>-->
+
+                                                <!--หน้าที่ของคำ-->
+                                                <?php
+                                                $partOfSpeech = null;
+                                                switch ($place['part_of_speech']) {
+                                                    case 'noun':
+                                                        $partOfSpeech = 'นาม (Noun)';
+                                                        break;
+                                                    case 'pronoun':
+                                                        $partOfSpeech = 'สรรพนาม (Pronoun)';
+                                                        break;
+                                                    case 'verb':
+                                                        $partOfSpeech = 'กริยา (Verb)';
+                                                        break;
+                                                    case 'adjective':
+                                                        $partOfSpeech = 'คุณศัพท์ (Adjective)';
+                                                        break;
+                                                    case 'adverb':
+                                                        $partOfSpeech = 'กริยาวิเศษณ์ (Adverb)';
+                                                        break;
+                                                    case 'preposition':
+                                                        $partOfSpeech = 'บุพบท (Preposition)';
+                                                        break;
+                                                    case 'conjunction':
+                                                        $partOfSpeech = 'สันธาน (Conjunction)';
+                                                        break;
+                                                    case 'interjection':
+                                                        $partOfSpeech = 'คำอุทาน (Interjection)';
+                                                        break;
+                                                }
+                                                ?>
+                                                <td style="text-align: center"><?= $partOfSpeech; ?></td>
+
                                                 <!--หมวดหมู่-->
                                                 <?php
                                                 $categoryText = null;
@@ -159,7 +159,7 @@ if ($result = $db->query($sql)) {
                                                 <td style="text-align: center"><?= $categoryText; ?></td>
 
                                                 <td nowrap>
-                                                    <form method="get" action="sentence_add_edit.php" style="display: inline; margin: 0">
+                                                    <form method="get" action="vocab_add_edit.php" style="display: inline; margin: 0">
                                                         <input type="hidden" name="place_id" value="<?= $place['id']; ?>"/>
 
                                                         <?php
@@ -244,7 +244,7 @@ if ($result = $db->query($sql)) {
         });
 
         function onClickAdd() {
-            window.location.href = 'sentence_add_edit.php';
+            window.location.href = 'vocab_add_edit.php';
         }
 
         function onChangePlaceRecommend(element, placeId) {
@@ -320,7 +320,7 @@ if ($result = $db->query($sql)) {
 
         function doDeleteplace(id) {
             $.post(
-                '../api/api.php/delete_sentence',
+                '../api/api.php/delete_vocab',
                 {
                     id: id,
                 }

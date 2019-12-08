@@ -43,6 +43,15 @@ switch ($action) {
     case 'delete_sentence':
         doDeleteSentence();
         break;
+    case 'add_vocab':
+        doAddVocab();
+        break;
+    case 'update_vocab':
+        doUpdateVocab();
+        break;
+    case 'delete_vocab':
+        doDeleteVocab();
+        break;
     case 'delete_project_asset':
         doDeleteProjectAsset();
         break;
@@ -139,6 +148,30 @@ function doAddSentence()
     }
 }
 
+function doAddVocab()
+{
+    global $db, $response;
+
+    $word = trim($db->real_escape_string($_POST['word']));
+    $meaning = trim($db->real_escape_string($_POST['meaning']));
+    $partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
+    $category = $db->real_escape_string($_POST['category']);
+
+    $sql = "INSERT INTO efm_vocab (word, meaning, part_of_speech, category) 
+                VALUES ('$word', '$meaning', '$partOfSpeech', '$category')";
+
+    if ($result = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'เพิ่มข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการเพิ่มข้อมูล: ' . $db->error;
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
 function doUpdateSentence()
 {
     global $db, $response;
@@ -191,6 +224,33 @@ function doUpdateSentence()
     }
 }
 
+function doUpdateVocab()
+{
+    global $db, $response;
+
+    $id = $db->real_escape_string($_POST['placeId']);
+    $word = trim($db->real_escape_string($_POST['word']));
+    $meaning = trim($db->real_escape_string($_POST['meaning']));
+    $partOfSpeech = trim($db->real_escape_string($_POST['partOfSpeech']));
+    $category = $db->real_escape_string($_POST['category']);
+
+    $sql = "UPDATE efm_vocab 
+                SET word = '$word', meaning = '$meaning', 
+                    part_of_speech = '$partOfSpeech', category = '$category' 
+                WHERE id = $id";
+
+    if ($result = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'แก้ไขข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล: ' . $db->error;
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
 function doDeleteSentence()
 {
     global $db, $response;
@@ -198,6 +258,26 @@ function doDeleteSentence()
     $id = $db->real_escape_string($_POST['id']);
 
     $sql = "DELETE FROM efm_sentence WHERE id = $id";
+
+    if ($deleteResult = $db->query($sql)) {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;
+        $response[KEY_ERROR_MESSAGE] = 'ลบข้อมูลสำเร็จ';
+        $response[KEY_ERROR_MESSAGE_MORE] = '';
+    } else {
+        $response[KEY_ERROR_CODE] = ERROR_CODE_ERROR;
+        $response[KEY_ERROR_MESSAGE] = 'เกิดข้อผิดพลาดในการลบข้อมูล: ' . $db->error;
+        $errMessage = $db->error;
+        $response[KEY_ERROR_MESSAGE_MORE] = "$errMessage\nSQL: $sql";
+    }
+}
+
+function doDeleteVocab()
+{
+    global $db, $response;
+
+    $id = $db->real_escape_string($_POST['id']);
+
+    $sql = "DELETE FROM efm_vocab WHERE id = $id";
 
     if ($deleteResult = $db->query($sql)) {
         $response[KEY_ERROR_CODE] = ERROR_CODE_SUCCESS;

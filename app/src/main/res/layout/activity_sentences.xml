@@ -17,7 +17,7 @@
 
     <ImageView
         android:id="@+id/morning_image_view"
-        android:layout_width="150dp"
+        android:layout_width="140dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -32,7 +32,7 @@
     <ImageView
         android:id="@+id/start_image_view"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toTopOf="@+id/school_image_view"
@@ -45,7 +45,7 @@
     <ImageView
         android:id="@+id/goal_image_view"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +56,7 @@
 
     <ImageView
         android:id="@+id/school_image_view"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -70,7 +70,7 @@
 
     <ImageView
         android:id="@+id/playground_image_view"
-        android:layout_width="180dp"
+        android:layout_width="170dp"
         android:layout_height="0dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:clickable="true"
@@ -83,7 +83,7 @@
 
     <ImageView
         android:id="@+id/eat_image_view"
-        android:layout_width="180dp"
+        android:layout_width="170dp"
         android:layout_height="0dp"
         android:layout_marginBottom="32dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -97,7 +97,7 @@
 
     <ImageView
         android:id="@+id/weekend_image_view"
-        android:layout_width="150dp"
+        android:layout_width="140dp"
         android:layout_height="0dp"
         android:layout_marginBottom="32dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -239,8 +239,8 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintBottom_toBottomOf="@+id/goal_image_view"
         app:layout_constraintEnd_toStartOf="@+id/goal_image_view"
         app:layout_constraintStart_toEndOf="@+id/weekend_image_view"

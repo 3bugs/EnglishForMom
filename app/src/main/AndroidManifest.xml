@@ -24,7 +24,8 @@
             android:name=".AnimationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Animations"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
