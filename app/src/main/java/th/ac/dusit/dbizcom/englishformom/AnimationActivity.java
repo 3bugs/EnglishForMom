@@ -26,6 +26,7 @@ import th.ac.dusit.dbizcom.englishformom.model.Sentence;
 public class AnimationActivity extends AppCompatActivity {
 
     private List<Animation> mAnimationList = null;
+
     private RecyclerView mRecyclerView;
 
     @Override
@@ -53,7 +54,7 @@ public class AnimationActivity extends AppCompatActivity {
         AnimationListAdapter adapter = new AnimationListAdapter(
                 this,
                 mAnimationList,
-                new AnimationListener() {
+                new AnimationActivityListener() {
                     @Override
                     public void onClickAnimation(Animation animation) {
                         Utils.showShortToast(AnimationActivity.this, animation.category);
@@ -99,7 +100,7 @@ public class AnimationActivity extends AppCompatActivity {
         startActivity(intent);
     }*/
 
-    public interface AnimationListener {
+    public interface AnimationActivityListener {
         void onClickAnimation(Animation animation);
     }
 
@@ -110,9 +111,9 @@ public class AnimationActivity extends AppCompatActivity {
 
         private final Context mContext;
         private final List<Animation> mAnimationList;
-        private final AnimationListener mListener;
+        private final AnimationActivityListener mListener;
 
-        AnimationListAdapter(Context context, List<Animation> animationList, AnimationListener listener) {
+        AnimationListAdapter(Context context, List<Animation> animationList, AnimationActivityListener listener) {
             mContext = context;
             mAnimationList = animationList;
             mListener = listener;
@@ -188,7 +189,7 @@ public class AnimationActivity extends AppCompatActivity {
 
                 mVideoImageView = itemView.findViewById(R.id.video_image_view);
                 mCategoryImageView = itemView.findViewById(R.id.category_image_view);
-                mDurationTextView = itemView.findViewById(R.id.duration_text_view);
+                mDurationTextView = itemView.findViewById(R.id.word_text_view);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -37,7 +37,7 @@
         app:srcCompat="@drawable/title_category_morning" />
 
     <TextView
-        android:id="@+id/duration_text_view"
+        android:id="@+id/word_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

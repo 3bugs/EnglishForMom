@@ -8,7 +8,7 @@ public class Word {
     public final int id;
     @SerializedName("word")
     public final String word;
-    @SerializedName("meaninig")
+    @SerializedName("meaning")
     public final String meaning;
     @SerializedName("part_of_speech")
     public final String partOfSpeech;
