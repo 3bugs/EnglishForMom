@@ -9,4 +9,7 @@
 
     <string name="video_url_1">http://5911011802009.msci.dusit.ac.th/early_morning_routine.mp4</string>
     <string name="video_url_2">http://5911011802009.msci.dusit.ac.th/fun_at_the_playground.mp4</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

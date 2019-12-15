@@ -7,9 +7,31 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import th.ac.dusit.dbizcom.englishformom.etc.Utils;
-
 public class MainActivity extends AppCompatActivity {
+
+    private View.OnClickListener mOnClickImageViewListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = null;
+            switch (v.getId()) {
+                case R.id.dialogues_image_view:
+                    intent = new Intent(MainActivity.this, SentencesActivity.class);
+                    break;
+                case R.id.vocabulary_image_view:
+                    intent = new Intent(MainActivity.this, VocabActivity.class);
+                    break;
+                case R.id.animation_image_view:
+                    intent = new Intent(MainActivity.this, AnimationActivity.class);
+                    break;
+                case R.id.developer_image_view:
+                    intent = new Intent(MainActivity.this, AboutActivity.class);
+                    break;
+            }
+            if (intent != null) {
+                startActivity(intent);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,38 +39,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView dialoguesImageView = findViewById(R.id.dialogues_image_view);
-        dialoguesImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SentencesActivity.class);
-                startActivity(intent);
-            }
-        });
+        dialoguesImageView.setOnClickListener(mOnClickImageViewListener);
 
         ImageView vocabularyImageView = findViewById(R.id.vocabulary_image_view);
-        vocabularyImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.showLongToast(MainActivity.this, "ยังไม่เสร็จครับ");
-            }
-        });
+        vocabularyImageView.setOnClickListener(mOnClickImageViewListener);
 
         ImageView animationImageView = findViewById(R.id.animation_image_view);
-        animationImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AnimationActivity.class);
-                startActivity(intent);
-            }
-        });
+        animationImageView.setOnClickListener(mOnClickImageViewListener);
 
         ImageView developerImageView = findViewById(R.id.developer_image_view);
-        developerImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
-            }
-        });
+        developerImageView.setOnClickListener(mOnClickImageViewListener);
     }
 }

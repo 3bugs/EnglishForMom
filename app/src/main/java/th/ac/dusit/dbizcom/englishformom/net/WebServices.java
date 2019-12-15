@@ -27,6 +27,10 @@ public interface WebServices {
             @Query("category") String category
     );
 
+    @GET("get_vocab")
+    Call<GetVocabResponse> getVocab(
+    );
+
     @GET("get_animation")
     Call<GetAnimationResponse> getAnimation(
     );
