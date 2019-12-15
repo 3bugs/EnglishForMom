@@ -12,24 +12,22 @@
 
     <ImageView
         android:id="@+id/video_image_view"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#dddddd"
-        android:padding="16dp"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_playback" />
+        app:srcCompat="@drawable/thumb_morning" />
 
     <ImageView
         android:id="@+id/category_image_view"
         android:layout_width="200dp"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="h,500:100"
         app:layout_constraintStart_toEndOf="@+id/video_image_view"
@@ -42,9 +40,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="TextView"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/category_image_view"
         app:layout_constraintTop_toBottomOf="@+id/category_image_view" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/video_image_view"
+        app:layout_constraintEnd_toEndOf="@+id/video_image_view"
+        app:layout_constraintStart_toStartOf="@+id/video_image_view"
+        app:layout_constraintTop_toTopOf="@+id/video_image_view"
+        app:srcCompat="@drawable/ic_playback" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

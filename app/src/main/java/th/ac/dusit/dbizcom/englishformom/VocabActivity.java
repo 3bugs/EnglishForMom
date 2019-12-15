@@ -28,9 +28,9 @@ import th.ac.dusit.dbizcom.englishformom.net.WebServices;
 public class VocabActivity extends AppCompatActivity implements
         VocabFragment.VocabFragmentListener {
 
-    private ProgressBar mProgressView;
-
     private List<Word> mWordList = null;
+
+    private ProgressBar mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

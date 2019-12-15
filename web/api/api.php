@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'global.php';
+include_once('getid3/getid3.php');
 
 error_reporting(E_ERROR | E_PARSE);
 header('Content-type: application/json; charset=utf-8');
@@ -161,6 +162,12 @@ function doGetAnimation()
 {
     global $db, $response;
 
+    $getID3 = new getID3;
+    /*$file = $getID3->analyze($filename);
+    echo("Duration: ".$file['playtime_string'].
+        " / Dimensions: ".$file['video']['resolution_x']." wide by ".$file['video']['resolution_y']." tall".
+        " / Filesize: ".$file['filesize']." bytes<br />");*/
+
     $where = ' TRUE ';
     if (isset($_GET['category'])) {
         $category = $db->real_escape_string($_GET['category']);
@@ -179,8 +186,11 @@ function doGetAnimation()
         while ($row = $result->fetch_assoc()) {
             $animation = array();
             $animation['id'] = (int)$row['id'];
-            $animation['video_file'] = $row['video_file'];
             $animation['category'] = $row['category'];
+            $animation['video_url'] = 'http://5911011802001.msci.dusit.ac.th/english_for_mom/video/' . $row['video_file'];
+
+            $file = $getID3->analyze("../video/{$row['video_file']}");
+            $animation['video_duration'] = $file['video']['playtime'];
 
             array_push($animationList, $animation);
         }

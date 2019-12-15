@@ -1,6 +1,8 @@
 package th.ac.dusit.dbizcom.englishformom;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,17 +19,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
 import th.ac.dusit.dbizcom.englishformom.etc.Utils;
 import th.ac.dusit.dbizcom.englishformom.model.Animation;
 import th.ac.dusit.dbizcom.englishformom.model.Sentence;
+import th.ac.dusit.dbizcom.englishformom.net.ApiClient;
+import th.ac.dusit.dbizcom.englishformom.net.GetAnimationResponse;
+import th.ac.dusit.dbizcom.englishformom.net.MyRetrofitCallback;
+import th.ac.dusit.dbizcom.englishformom.net.WebServices;
+
+import static th.ac.dusit.dbizcom.englishformom.VideoActivity.KEY_VIDEO_URL;
 
 public class AnimationActivity extends AppCompatActivity {
 
     private List<Animation> mAnimationList = null;
 
+    private ProgressBar mProgressView;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -34,30 +45,58 @@ public class AnimationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_animation);
 
-        mAnimationList = new ArrayList<>();
-        mAnimationList.add(new Animation(
-                1, "morning", "", 31.2f
-        ));
-        mAnimationList.add(new Animation(
-                2, "school", "", 33.4f
-        ));
-        mAnimationList.add(new Animation(
-                3, "playground", "", 35.6f
-        ));
-        mAnimationList.add(new Animation(
-                4, "eat", "", 37.8f
-        ));
-        mAnimationList.add(new Animation(
-                5, "weekend", "", 39.0f
-        ));
+        if (mAnimationList == null) {
+            doGetAnimation();
+        }
+    }
 
+    private void doGetAnimation() {
+        mProgressView = findViewById(R.id.progress_view);
+        mProgressView.setVisibility(View.VISIBLE);
+
+        Retrofit retrofit = ApiClient.getClient();
+        WebServices services = retrofit.create(WebServices.class);
+
+        Call<GetAnimationResponse> call = services.getAnimation();
+        call.enqueue(new MyRetrofitCallback<>(
+                this,
+                null,
+                mProgressView,
+                new MyRetrofitCallback.MyRetrofitCallbackListener<GetAnimationResponse>() {
+                    @Override
+                    public void onSuccess(GetAnimationResponse responseBody) {
+                        mAnimationList = responseBody.animationList;
+                        setupView();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Utils.showOkDialog(
+                                AnimationActivity.this,
+                                "Error",
+                                errorMessage,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                }
+                        );
+                    }
+                }
+        ));
+    }
+
+    private void setupView() {
         AnimationListAdapter adapter = new AnimationListAdapter(
                 this,
                 mAnimationList,
                 new AnimationActivityListener() {
                     @Override
                     public void onClickAnimation(Animation animation) {
-                        Utils.showShortToast(AnimationActivity.this, animation.category);
+                        Intent intent = new Intent(AnimationActivity.this, VideoActivity.class);
+                        intent.putExtra(KEY_VIDEO_URL, animation.videoUrl);
+                        startActivity(intent);
                     }
                 }
         );
@@ -106,9 +145,6 @@ public class AnimationActivity extends AppCompatActivity {
 
     private static class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdapter.ViewHolder> {
 
-        private static final int VIEW_TYPE_NORMAL = 0;
-        private static final int VIEW_TYPE_BUTTON = 1;
-
         private final Context mContext;
         private final List<Animation> mAnimationList;
         private final AnimationActivityListener mListener;
@@ -133,32 +169,41 @@ public class AnimationActivity extends AppCompatActivity {
             final Animation animation = mAnimationList.get(position);
 
             h.mAnimation = animation;
-            h.mDurationTextView.setText(String.valueOf(animation.videoDuration));
 
             int categoryImageResId = 0;
+            int thumbImageResId = 0;
+            String duration = null;
             switch (animation.category) {
                 case Sentence.CATEGORY_MORNING:
                     categoryImageResId = R.drawable.title_category_morning;
-                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_01);
+                    thumbImageResId = R.drawable.thumb_morning;
+                    duration = "1:35";
                     break;
                 case Sentence.CATEGORY_SCHOOL:
                     categoryImageResId = R.drawable.title_category_school;
-                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_02);
+                    thumbImageResId = R.drawable.thumb_school;
+                    duration = "2:25";
                     break;
                 case Sentence.CATEGORY_PLAYGROUND:
                     categoryImageResId = R.drawable.title_category_playground;
-                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_03);
+                    thumbImageResId = R.drawable.thumb_playground;
+                    duration = "1:44";
                     break;
                 case Sentence.CATEGORY_EAT:
                     categoryImageResId = R.drawable.title_category_eat;
-                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_04);
+                    thumbImageResId = R.drawable.thumb_eat;
+                    duration = "1:57";
                     break;
                 case Sentence.CATEGORY_WEEKEND:
                     categoryImageResId = R.drawable.title_category_weekend;
-                    //h.mVideoImageView.setImageResource(R.drawable.thumb_animation_05);
+                    thumbImageResId = R.drawable.thumb_weekend;
+                    duration = "1:41";
                     break;
             }
+
             h.mCategoryImageView.setImageResource(categoryImageResId);
+            h.mVideoImageView.setImageResource(thumbImageResId);
+            h.mDurationTextView.setText(duration);
 
             /*CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(mContext);
             circularProgressDrawable.setStrokeWidth(5f);
